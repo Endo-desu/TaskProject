@@ -10,6 +10,13 @@ import java.util.List;
 import model.entity.CategoryBean;
 
 public class CategoryDAO {
+	
+	/**
+	 * カテゴリ情報を全件抽出します
+	 * @return カテゴリ情報
+	 * @throws SQLException
+	 * @throws ClassNotFoundException
+	 */
 	public List<CategoryBean> selectAll()
 			throws SQLException, ClassNotFoundException {
 

@@ -4,11 +4,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>削除完了</title>
 </head>
 <body>
 	<form action="">
-		<%= request.getAttribute("taskName") %>
+		<%= request.getAttribute("deleteTaskName") %>
 		<p>を削除しました</p>
 		<br>
 		<input type="submit" value="メニュー画面へ戻る">

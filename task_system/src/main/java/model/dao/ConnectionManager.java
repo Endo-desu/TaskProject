@@ -5,13 +5,20 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConnectionManager{
-	/* データベースURL */
+	
+	/**
+	 *  データベースURL 
+	 */
 	private static final String URL = "jdbc:mysql://localhost:3306/task_db";
 	
-	/* ユーザ */
+	/**
+	 *  ユーザ 
+	 */
 	private static final String USER = "taskU";
 	
-	/* パスワード */
+	/**
+	 *  パスワード 
+	 */
 	private static final String PASSWORD = "taskP";
 	
 	/**

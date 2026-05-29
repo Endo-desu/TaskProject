@@ -13,28 +13,44 @@ import java.io.Serializable;
  */
 public class TaskBean implements Serializable {
 
-	/* タスクID */
-	private String taskId;
+	/**
+	 *  タスクID 
+	 */
+	private int taskId;
 	
-	/* タスク名 */
+	/**
+	 *  タスク名 
+	 */
 	private String taskName;
-
-	/* カテゴリ名 */
-	private String category;
-
-	/* 期限 */
+	
+	/**
+	 *  担当者情報 
+	 */
+	private String userName;
+	
+	/**
+	 *  期限 
+	 */
 	private String limitDate;
 
-	/* 担当者情報 */
-	private String manager;
+	/**
+	 *  カテゴリ名 
+	 */
+	private String categoryName;
 
-	/* ステータス */
-	private String status;
+	/**
+	 *  ステータス 
+	 */
+	private String statusName;
 
-	/* メモ */
+	/**
+	 *  メモ 
+	 */
 	private String memo;
 
-	/* TaskBeanを構築します。 */
+	/**
+	 *  TaskBeanを構築します。 
+	 */
 	public TaskBean() {
 
 	}
@@ -43,7 +59,7 @@ public class TaskBean implements Serializable {
 	 * フィールドtaskの値を設定します。
 	 * @param task タスク名
 	 */
-	public void setTaskId(String taskId) {
+	public void setTaskId(int taskId) {
 		this.taskId = taskId;
 	}
 
@@ -51,7 +67,7 @@ public class TaskBean implements Serializable {
 	 * フィールドtaskの値を返します。
 	 * @return タスク名
 	 */
-	public String getTaskId() {
+	public int getTaskId() {
 		return taskId;
 	}
 
@@ -70,23 +86,23 @@ public class TaskBean implements Serializable {
 	public String getTaskName() {
 		return taskName;
 	}
-
+	
 	/**
-	 * フィールドcategoryの値を設定します。
-	 * @param category カテゴリ名
+	 * フィールドuserNameの値を設定します。
+	 * @param userName 担当者情報
 	 */
-	public void setCategory(String category) {
-		this.category = category;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 	/**
-	 * フィールドcategoryの値を返します。
-	 * @return カテゴリ名
+	 * フィールドuserNameの値を返します。
+	 * @return 担当者情報
 	 */
-	public String getCategory() {
-		return category;
+	public String getUserName() {
+		return userName;
 	}
-
+	
 	/**
 	 * フィールドlimitDateの値を設定します。
 	 * @param limitDate 期限
@@ -104,35 +120,35 @@ public class TaskBean implements Serializable {
 	}
 
 	/**
-	 * フィールドmanagerの値を設定します。
-	 * @param manager 担当者情報
+	 * フィールドcategoryNameの値を設定します。
+	 * @param categoryName カテゴリ名
 	 */
-	public void setManager(String manager) {
-		this.manager = manager;
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
 	}
 
 	/**
-	 * フィールドmanagerの値を返します。
-	 * @return 担当者情報
+	 * フィールドcategoryNameの値を返します。
+	 * @return カテゴリ名
 	 */
-	public String getManager() {
-		return manager;
+	public String getCategoryName() {
+		return categoryName;
 	}
 
 	/**
-	 * フィールドstatusの値を設定します。
-	 * @param status ステータス
+	 * フィールドstatusNameの値を設定します。
+	 * @param statusName ステータス
 	 */
-	public void setStatus(String status) {
-		this.status = status;
+	public void setStatusName(String statusName) {
+		this.statusName = statusName;
 	}
 
 	/**
-	 * フィールドstatusの値を返します。
+	 * フィールドstatusNameの値を返します。
 	 * @return ステータス
 	 */
-	public String getStatus() {
-		return status;
+	public String getStatusName() {
+		return statusName;
 	}
 
 	/**

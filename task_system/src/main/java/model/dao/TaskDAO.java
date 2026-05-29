@@ -45,7 +45,7 @@ public class TaskDAO{
 			while (res.next()) {
 
 				String taskName = res.getString("task_name");
-				String category = res.getString("category_name");
+				String categoryName = res.getString("category_name");
 				String limitDate = res.getString("limit_date");
 				String manager = res.getString("user_name");
 				String status = res.getString("status_name");
@@ -54,10 +54,10 @@ public class TaskDAO{
 				//リストに入力値を格納
 				TaskBean task = new TaskBean();
 				task.setTaskName(taskName);
-				task.setCategory(category);
+				task.setCategoryName(categoryName);
 				task.setLimitDate(limitDate);
-				task.setManager(manager);
-				task.setStatus(status);
+				task.setUserName(manager);
+				task.setStatusName(status);
 				task.setMemo(memo);
 
 				taskList.add(task);
@@ -78,22 +78,23 @@ public class TaskDAO{
 
 		// データベースへの接続の取得、PreparedStatementの取得
 		try (Connection con = ConnectionManager.getConnection();
-				PreparedStatement pstmt = con.prepareStatement("INSERT INTO t_task(task_name, category_id, limite_date, user_id, status_code, memo) VALUES(?, ?, ?, ?, ?, ?)")) {
+				PreparedStatement pstmt = con.prepareStatement(
+						"INSERT INTO t_task(task_name, category_id, limite_date, user_id, status_code, memo) VALUES(?, ?, ?, ?, ?, ?)")) {
 
 			// DTOからのデータの取り出し
 			String taskName = task.getTaskName();
-			String category = task.getCategory();
+			String categoryName = task.getCategoryName();
 			String limitDate = task.getLimitDate();
-			String maneger = task.getManager();
-			String status = task.getStatus();
+			String userName = task.getUserName();
+			String statusName = task.getStatusName();
 			String memo = task.getMemo();
 
 			// プレースホルダへの値の設定
 			pstmt.setString(1, taskName);
-			pstmt.setString(2, category);
+			pstmt.setString(2, categoryName);
 			pstmt.setString(3, limitDate);
-			pstmt.setString(4, maneger);
-			pstmt.setString(5, status);
+			pstmt.setString(4, userName);
+			pstmt.setString(5, statusName);
 			pstmt.setString(6, memo);
 
 			// SQLステートメントの実行
@@ -122,17 +123,17 @@ public class TaskDAO{
 
 			// DTOからのデータの取り出し
 			String taskName = task.getTaskName();
-			String category = task.getCategory();
+			String categoryName = task.getCategoryName();
 			String limitdate  = task.getLimitDate();
 			String memo = task.getMemo();
-			String taskId = task.getTaskId();
+			int taskId = task.getTaskId();
 
 			// プレースホルダへの値の設定
 			pstmt.setString(1, taskName);
-			pstmt.setString(2, category);
+			pstmt.setString(2, categoryName);
 			pstmt.setString(3, limitdate);
 			pstmt.setString(4, memo);
-			pstmt.setString(5, taskId);
+			pstmt.setInt(5, taskId);
 			
 
 			// SQLステートメントの実行
@@ -151,14 +152,14 @@ public class TaskDAO{
 	public int delete(TaskBean task) throws SQLException, ClassNotFoundException {
 		int count = 0; //処理件数
 		
-		/* ユーザIDとパスワードが一致するか数えるSQL */
+		// ユーザIDとパスワードが一致するか数えるSQL 
 		String sql = "DELETE FROM t_task WHERE task_id = ?";
 		
 		try(Connection con = ConnectionManager.getConnection();
 				PreparedStatement pstmt = con.prepareStatement(sql)){
 			
 			//プレースホルダへの値の設定
-			pstmt.setString(1, task.getTaskId());
+			pstmt.setInt(1, task.getTaskId());
 			
 			//SQLステートメントの実行
 			count = pstmt.executeUpdate();

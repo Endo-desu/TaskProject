@@ -7,29 +7,39 @@
 <title>エラー</title>
 </head>
 <body>
-	<% if(additonError){  %>
+	<% if(request.getAttribute("additonError")){  %>
 		<form action="">
 			<h2>タスクを登録できませんでした。</h2>
 			<br>
-			<p>以下の内容が無効です。</p>
-			<br>
-			<p>(不適切な項目)</p>
-			<% if() %>
+			
+	
 			<br>
 			<input type="submit" value="登録画面へ戻る"> 
 		</form>
-	<% } else if(changeError){ %>
+	<% 
+		} else{ 
+			/* DO NOTHING */
+		}
+	%>
+	
+	
+	<% if(request.getAttribute("changeError")){ %>
 		<form action="">
 			<h2>タスクを編集できませんでした。</h2>
 			<br>
-			<p>以下の内容が無効です。</p>
-			<br>
-			<p>(不適切な項目)</p>
-			<% if()) %>
+			
+			
 			<br>
 			<input type="submit" value="編集画面へ戻る"> 
 		</form>
-	<% } else if(deleteError){ %>
+	<% 
+		}else{ 
+			/* DO NOTHING */
+		}
+	%>
+	
+	
+	<% if(request.getAttribute("deleteError")){ %>
 		<form action="">
 			<%= request.getAttribute("taskName") %>
 			<p>を削除できませんでした。</p>
@@ -38,6 +48,11 @@
 			
 			<input type="submit" value="タスク一覧へ戻る"> 
 		</form>
-	<% } %>	
+	<% 
+		} else{ 
+			/* DO NOTHING */
+		}
+	%>
+		
 </body>
 </html>
