@@ -12,7 +12,7 @@
 		<p>を削除しますか？</p>
 		<div>
 			<input type="submit" value="はい">
-			<input type="submit" formaction="" value="いいえ">
+			<input type="submit" formaction="task-list-servlet" value="いいえ">
 		</div>
 	</form>
 </body>

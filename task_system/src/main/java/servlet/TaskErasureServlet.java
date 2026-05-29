@@ -70,7 +70,7 @@ public class TaskErasureServlet extends HttpServlet {
 		
 		if(deleteCnt == 1) {
 			//転送先のパスを指定して転送処理用オブジェクトを取得
-			RequestDispatcher rd = request.getRequestDispatcher("task-erasure-result.jsp");
+			RequestDispatcher rd = request.getRequestDispatcher("task-erasure-confirm");
 							
 			//リクエストの転送
 			rd.forward(request, response);

@@ -7,7 +7,7 @@
 <title>エラー</title>
 </head>
 <body>
-	<% if(request.getAttribute("additonError")){  %>
+	<% if(（boolean)request.getAttribute("hasError")){  %>
 		<form action="">
 			<h2>タスクを登録できませんでした。</h2>
 			<br>
@@ -23,7 +23,7 @@
 	%>
 	
 	
-	<% if(request.getAttribute("changeError")){ %>
+	<% if(（boolean)request.getAttribute("changeError")){ %>
 		<form action="">
 			<h2>タスクを編集できませんでした。</h2>
 			<br>
@@ -39,7 +39,7 @@
 	%>
 	
 	
-	<% if(request.getAttribute("deleteError")){ %>
+	<% if(（boolean)request.getAttribute("deleteError")){ %>
 		<form action="">
 			<%= request.getAttribute("taskName") %>
 			<p>を削除できませんでした。</p>
