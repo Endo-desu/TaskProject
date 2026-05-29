@@ -13,11 +13,10 @@ import model.entity.UserBean;
  */
 public class UserDAO {
 
-	public boolean loginCheck(UserBean userId, UserBean password)
+	public boolean loginCheck(UserBean user)
 			throws SQLException, ClassNotFoundException {
 		
-		UserBean user = new UserBean();
-		String sql = "SELECT password FROM m_user WHERE user_id = ? AND password = ?";
+		String sql = "SELECT * FROM m_user WHERE user_id = ? AND password = ?";
 
 		try (Connection con = ConnectionManager.getConnection();
 				PreparedStatement pstmt = con.prepareStatement(sql)) {

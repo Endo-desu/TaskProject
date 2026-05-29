@@ -4,9 +4,15 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>タスク削除確認</title>
 </head>
 <body>
-
+	<form action="task-erasure" method="post">
+		<%= request.getAttribute("taskName") %><p>を削除しますか？</p>
+		<div>
+			<input type="submit" value="はい">
+			<input type="submit" formaction="" value="いいえ">
+		</div>
+	</form>
 </body>
 </html>
