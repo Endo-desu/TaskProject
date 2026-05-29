@@ -7,6 +7,11 @@
 <title>Insert title here</title>
 </head>
 <body>
-
+	<form action="">
+		<%= request.getAttribute("taskName") %>
+		<p>を削除しました</p>
+		<br>
+		<input type="submit" value="メニュー画面へ戻る">
+	</form>
 </body>
 </html>
