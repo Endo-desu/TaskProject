@@ -22,20 +22,21 @@ public class TaskDAO{
 
 		List<TaskBean> taskList = new ArrayList<TaskBean>();
 
-		String sql = "SELECT t.task_name "
-						+ "c.category_name "
-						+ "t.limit_date "
-						+ "u.user_name "
-						+ "s.status_name "
+		String sql = "SELECT t.task_id, " 
+						+ "t.task_name, "
+						+ "c.category_name, "
+						+ "t.limit_date, "
+						+ "u.user_name, "
+						+ "s.status_name, "
 						+ "t.memo"
 				  + " FROM "
 						+ "t_task t "
-					+ "JOIN m_user u"
-						+ "ON t.user_id = u.user_id"
-					+ "JOIN m_category c"
-						+ "ON t.category_id = c.category_id"
-					+ "JOIN m_status s"
-						+ "ON t.status_code = s.status_code";
+					+ "JOIN m_user u "
+						+ "ON t.user_id = u.user_id "
+					+ "JOIN m_category c "
+						+ "ON t.category_id = c.category_id "
+					+ "JOIN m_status s "
+						+ "ON t.status_code = s.status_code ";
 
 		// データベースへの接続の取得、更新系SQLステートメントの実行
 		try (Connection con = ConnectionManager.getConnection();
@@ -43,7 +44,8 @@ public class TaskDAO{
 				ResultSet res = pstmt.executeQuery()) {
 
 			while (res.next()) {
-
+				
+				int taskId = res.getInt("task_id");
 				String taskName = res.getString("task_name");
 				String categoryName = res.getString("category_name");
 				String limitDate = res.getString("limit_date");
@@ -53,6 +55,7 @@ public class TaskDAO{
 
 				//リストに入力値を格納
 				TaskBean task = new TaskBean();
+				task.setTaskId(taskId);
 				task.setTaskName(taskName);
 				task.setCategoryName(categoryName);
 				task.setLimitDate(limitDate);
@@ -79,7 +82,7 @@ public class TaskDAO{
 		// データベースへの接続の取得、PreparedStatementの取得
 		try (Connection con = ConnectionManager.getConnection();
 				PreparedStatement pstmt = con.prepareStatement(
-						"INSERT INTO t_task(task_name, category_id, limite_date, user_id, status_code, memo) VALUES(?, ?, ?, ?, ?, ?)")) {
+						"INSERT INTO t_task(task_name, category_id, limit_date, user_id, status_code, memo) VALUES(?, ?, ?, ?, ?, ?)")) {
 
 			// DTOからのデータの取り出し
 			String taskName = task.getTaskName();
@@ -91,7 +94,7 @@ public class TaskDAO{
 
 			// プレースホルダへの値の設定
 			pstmt.setString(1, taskName);
-			pstmt.setString(2, categoryName);
+			pstmt.setInt(2, Integer.parseInt(categoryName));
 			pstmt.setString(3, limitDate);
 			pstmt.setString(4, userName);
 			pstmt.setString(5, statusName);

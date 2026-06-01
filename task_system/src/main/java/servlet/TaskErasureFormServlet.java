@@ -38,6 +38,12 @@ public class TaskErasureFormServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		// リクエストのエンコーディング方式を指定
+		request.setCharacterEncoding("UTF-8");
+		
+		request.setAttribute("deleteTaskId", request.getParameter("taskId"));
+		request.setAttribute("deleteTaskName", request.getParameter("taskName"));
+		
 		// リクエストの転送
 		RequestDispatcher rd = request.getRequestDispatcher("task-erasure.jsp");
 		rd.forward(request, response);

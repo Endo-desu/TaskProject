@@ -7,7 +7,7 @@
 <title>削除完了</title>
 </head>
 <body>
-	<form action="menu-servlet">
+	<form action="menu-servlet" method="post">
 		<%= request.getAttribute("deleteTaskName") %>
 		<p>を削除しました</p>
 		<br>

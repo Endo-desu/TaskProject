@@ -1,3 +1,4 @@
+<%@page import="model.entity.TaskBean"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 pageEncoding="UTF-8" import="java.util.List, model.entity.UserBean, model.entity.CategoryBean, model.entity.StatusBean" %>
 <!DOCTYPE html>
@@ -7,39 +8,61 @@ pageEncoding="UTF-8" import="java.util.List, model.entity.UserBean, model.entity
 <title>完了画面(パーツ)</title>
 </head>
 <body>
+	
 
     タスク名：<input type="text" name="taskName"
-        value="<jsp:getProperty name="task" property="taskName" />"><br>
+        value="<%= request.getAttribute("taskName") %>"><br>
     カテゴリ情報：<select  name="categoryName">
-        <% for(CategoryBean cat : (List<CategoryBean>) request.getAttribute("categoryList")){ 7
+        <% 
+        	for(CategoryBean cat : (List<CategoryBean>) request.getAttribute("categoryList")){ 
+       			if(cat.getCategoryName().equals((String)request.getAttribute("categoryName"))){
         %>
-         <option value="<% cat.getCategoryId() %>"><% cat.getCategoryName() %></option>
+         <option value="<%= cat.getCategoryId() %>" selected><%= cat.getCategoryName() %></option>
         <%
-        }
-        %>
+       			}else{
+       	%>
+       	 <option value="<%= cat.getCategoryId() %>"><%= cat.getCategoryName() %></option>
+       	<%
+       			}
+       		}
+       	%>
     
     </select><br>
         
     期限：<input type="date" name="date"
-        value="<jsp:getProperty name="task" property="limitDate" />"><br>
+        value="<%= request.getAttribute("limitDate") %>"><br>
     担当者情報：<select  name="userName">
-       <% for(UserBean user : (List<UserBean>) request.getAttribute("userList")){ 7
-        %>
-         <option value="<% user.getUserId() %>"><% user.getUserName() %></option>
-        <%
-        }
-        %>
+       <% 
+       		for(UserBean user : (List<UserBean>) request.getAttribute("userList")){ 
+       			if(user.getUserName().equals((String)request.getAttribute("userName"))){
+       %>
+         <option value="<%= user.getUserId() %>" selected><%= user.getUserName() %></option>
+       <%
+        		}else{
+       %>
+         <option value="<%= user.getUserId() %>"><%= user.getUserName() %></option>
+       <%
+        		}
+       		}
+       %>
        </select><br>
     ステータス情報：<select  name="StatusName">
-       <% for(StatusBean sta : (List<StatusBean>) request.getAttribute("statusList")){ 7
-        %>
-         <option value="<% sta.getStatusId() %>"><% sta.getStatusName() %></option>
-        <%
-        }
-        %>
+       <% 
+       		for(StatusBean sta : (List<StatusBean>) request.getAttribute("statusList")){ 
+       			if(sta.getStatusName().equals((String)request.getAttribute("statusName"))){
+       %> 
+         <option value="<%= sta.getStatusCode() %>" selected><%= sta.getStatusName() %></option>
+       <%
+        		}else{
+       %>
+         <option value="<%= sta.getStatusCode() %>"><%= sta.getStatusName() %></option>
+       <%
+        		}
+       		}
+       %>
         </select><br>
     メモ：<input type="textarea" name="memo"
-        value="<jsp:getProperty name="task" property="memo" />"><br>
+        value="<%= request.getAttribute("memo") %>"><br>
         
         
 

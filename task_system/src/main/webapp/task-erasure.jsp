@@ -8,9 +8,11 @@
 </head>
 <body>
 	<form action="task-erasure" method="post">
-		<%= request.getAttribute("taskName") %>
-		<p>を削除しますか？</p>
+		<p><%= request.getAttribute("deleteTaskName") %>を削除しますか？</p>
 		<div>
+			<input type = "hidden" name = "delete-task-id" value ="<%= request.getAttribute("deleteTaskId") %>">
+			<input type = "hidden" name = "delete-task-name" value ="<%= request.getAttribute("deleteTaskName") %>">
+		
 			<input type="submit" value="はい">
 			<input type="submit" formaction="task-list-servlet" value="いいえ">
 		</div>

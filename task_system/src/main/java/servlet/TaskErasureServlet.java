@@ -45,7 +45,6 @@ public class TaskErasureServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 				
 		TaskBean task = new TaskBean();
-		String deleteTaskName = (String)request.getAttribute("taskName");
 		int deleteCnt = 0;
 						
 		try {
@@ -54,17 +53,15 @@ public class TaskErasureServlet extends HttpServlet {
 			model.dao.TaskDAO dao = new model.dao.TaskDAO();
 							
 			//データベースアクセスオブジェクトの利用
-			task.setTaskId((int)request.getAttribute("taskId"));
+			task.setTaskId(Integer.parseInt(request.getParameter("delete-task-id")));
 							
 			deleteCnt = dao.delete(task);
-						
-			
 							
 		} catch (SQLException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 		
-		request.setAttribute("deleteTaskName", deleteTaskName);
+		request.setAttribute("deleteTaskName", request.getParameter("delete-task-name"));
 		
 		boolean deleteError = false;
 		
