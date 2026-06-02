@@ -16,7 +16,7 @@ public class CategoryBean implements Serializable {
 	/**
 	 * カテゴリID
 	 */
-	private String categoryId;
+	private int categoryId;
 
 	/**
 	 * カテゴリー名
@@ -34,7 +34,7 @@ public class CategoryBean implements Serializable {
 	 * フィールドtaskの値を設定します。
 	 * @param task タスク
 	 */
-	public void setCategoryId(String categoryId) {
+	public void setCategoryId(int categoryId) {
 		this.categoryId = categoryId;
 	}
 
@@ -42,7 +42,7 @@ public class CategoryBean implements Serializable {
 	 * フィールドtaskの値を返します。
 	 * @return タスク
 	 */
-	public String getCategoryId() {
+	public int getCategoryId() {
 		return categoryId;
 	}
 

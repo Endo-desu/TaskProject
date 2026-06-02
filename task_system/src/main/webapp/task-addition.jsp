@@ -9,7 +9,7 @@
 <body>
 	<a href="menu.jsp">メニュー</a>
 	<h1>タスク登録ページ</h1>
-	<form action="task-addition-confirm-servlet" method="post">
+	<form action="task-addition-servlet" method="post">
 		
 		<%@ include file="task-form.jsp" %>
 		

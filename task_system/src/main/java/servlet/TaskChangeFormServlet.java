@@ -50,20 +50,20 @@ public class TaskChangeFormServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
+
 		// リクエストのエンコーディング方式を指定
 		request.setCharacterEncoding("UTF-8");
-		
+
 		TaskDAO taskDAO = new TaskDAO();
 		UserDAO userDao = new UserDAO();
 		CategoryDAO categoryDao = new CategoryDAO();
 		StatusDAO statusDao = new StatusDAO();
-		
+
 		List<TaskBean> taskList = null;
 		List<UserBean> userList = null;
 		List<CategoryBean> categoryList = null;
 		List<StatusBean> statusList = null;
-		
+
 		try {
 			taskList = taskDAO.selectAll();
 			userList = userDao.selectAll();
@@ -76,7 +76,8 @@ public class TaskChangeFormServlet extends HttpServlet {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
 		}
-		
+
+		request.setAttribute("taskId", request.getParameter("taskId"));
 		request.setAttribute("taskName", request.getParameter("taskName"));
 		request.setAttribute("categoryName", request.getParameter("categoryName"));
 		request.setAttribute("limitDate", request.getParameter("limitDate"));
@@ -87,7 +88,7 @@ public class TaskChangeFormServlet extends HttpServlet {
 		request.setAttribute("userList", userList);
 		request.setAttribute("categoryList", categoryList);
 		request.setAttribute("statusList", statusList);
-		
+
 		// リクエストの転送
 		RequestDispatcher rd = request.getRequestDispatcher("task-change.jsp");
 		rd.forward(request, response);

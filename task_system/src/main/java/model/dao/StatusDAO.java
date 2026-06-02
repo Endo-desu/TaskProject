@@ -10,7 +10,7 @@ import java.util.List;
 import model.entity.StatusBean;
 
 public class StatusDAO {
-	
+
 	/**
 	 * ステータス情報を全件抽出します
 	 * @return ステータス情報

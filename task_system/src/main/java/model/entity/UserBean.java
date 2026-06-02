@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @author 板垣
  */
 public class UserBean implements Serializable {
-	
+
 	/**
 	 * ユーザID
 	 */
@@ -18,20 +18,19 @@ public class UserBean implements Serializable {
 	 * パスワード
 	 */
 	private String password;
-	
+
 	/**
 	 * ユーザ名
 	 */
 	private String userName;
 
-	
 	/**
 	 * UserBeanを構築します。
 	 */
 	public UserBean() {
 
 	}
-	
+
 	/**
 	 * フィールドuserIdの値を設定します。
 	 * @param userId ユーザID
@@ -47,7 +46,7 @@ public class UserBean implements Serializable {
 	public String getUserId() {
 		return userId;
 	}
-    
+
 	/**
 	 * フィールドpasswordの値を設定します。
 	 * @param password パスワード

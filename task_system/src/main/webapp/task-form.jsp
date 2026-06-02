@@ -9,10 +9,10 @@ pageEncoding="UTF-8" import="java.util.List, model.entity.UserBean, model.entity
 </head>
 <body>
 	
-
+	<input type = "hidden" name = "taskId" value ="<%= request.getAttribute("taskId") %>">	
     タスク名：<input type="text" name="taskName"
-        value="<%= request.getAttribute("taskName") %>"><br>
-    カテゴリ情報：<select  name="categoryName">
+        value="<%= request.getAttribute("taskName") != null ? request.getAttribute("taskName") : "" %>"><br>
+    カテゴリ情報：<select  name="categoryId">
         <% 
         	for(CategoryBean cat : (List<CategoryBean>) request.getAttribute("categoryList")){ 
        			if(cat.getCategoryName().equals((String)request.getAttribute("categoryName"))){
@@ -31,7 +31,7 @@ pageEncoding="UTF-8" import="java.util.List, model.entity.UserBean, model.entity
         
     期限：<input type="date" name="date"
         value="<%= request.getAttribute("limitDate") %>"><br>
-    担当者情報：<select  name="userName">
+    担当者情報：<select  name="userId">
        <% 
        		for(UserBean user : (List<UserBean>) request.getAttribute("userList")){ 
        			if(user.getUserName().equals((String)request.getAttribute("userName"))){
@@ -46,7 +46,7 @@ pageEncoding="UTF-8" import="java.util.List, model.entity.UserBean, model.entity
        		}
        %>
        </select><br>
-    ステータス情報：<select  name="StatusName">
+    ステータス情報：<select  name="StatusCode">
        <% 
        		for(StatusBean sta : (List<StatusBean>) request.getAttribute("statusList")){ 
        			if(sta.getStatusName().equals((String)request.getAttribute("statusName"))){
@@ -62,7 +62,7 @@ pageEncoding="UTF-8" import="java.util.List, model.entity.UserBean, model.entity
        %>
         </select><br>
     メモ：<input type="textarea" name="memo"
-        value="<%= request.getAttribute("memo") %>"><br>
+        value="<%= request.getAttribute("memo") != null ? request.getAttribute("memo") : "" %>"><br>
         
         
 

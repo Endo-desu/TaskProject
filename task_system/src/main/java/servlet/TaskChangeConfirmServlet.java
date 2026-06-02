@@ -1,6 +1,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -8,6 +9,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import model.dao.TaskDAO;
+import model.entity.TaskBean;
 
 /**
  * タスク情報の結果画面への遷移を制御する
@@ -39,9 +43,25 @@ public class TaskChangeConfirmServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// リクエストの転送
+
+		// 文字コーディングを設定
+		request.setCharacterEncoding("UTF-8");
+
+		TaskDAO dao = new TaskDAO();
+		TaskBean task = new TaskBean();
+
+		try {
+			task = dao.select(Integer.parseInt(request.getParameter("taskId")));
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+
+		request.setAttribute("TaskBean", task);
+
+		// JSPへリクエストの転送
 		RequestDispatcher rd = request.getRequestDispatcher("task-change-result.jsp");
 		rd.forward(request, response);
+
 	}
 
 }

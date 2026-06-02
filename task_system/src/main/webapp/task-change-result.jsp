@@ -9,12 +9,10 @@
 <body>
 	
 	タスクの内容を編集しました。<br>
-	
 
     <%@ include file="task-result.jsp" %>
-
 	
-	<form action="menu.html" method="POST">
+	<form action="menu-servlet" method="POST">
 		<input type="submit" value="メニュー画面に戻る">
 	</form>
 

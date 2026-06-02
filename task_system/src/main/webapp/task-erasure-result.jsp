@@ -8,8 +8,7 @@
 </head>
 <body>
 	<form action="menu-servlet" method="post">
-		<%= request.getAttribute("deleteTaskName") %>
-		<p>を削除しました</p>
+		<p><%= request.getAttribute("deleteTaskName") %>を削除しました</p>
 		<br>
 		<input type="submit" value="メニュー画面へ戻る">
 	</form>

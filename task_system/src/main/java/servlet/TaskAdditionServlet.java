@@ -59,6 +59,17 @@ public class TaskAdditionServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		TaskBean task = (TaskBean) session.getAttribute("TaskBean");
 
+		if (task == null) {
+			task = new TaskBean();
+		}
+
+		task.setTaskName(request.getParameter("taskName"));
+		task.setCategoryId(Integer.parseInt(request.getParameter("categoryId")));
+		task.setLimitDate(request.getParameter("date"));
+		task.setUserName(request.getParameter("userId"));
+		task.setStatusName(request.getParameter("StatusCode"));
+		task.setMemo(request.getParameter("memo"));
+
 		// DAO（データアクセスオブジェクト）の生成
 		TaskDAO dao = new TaskDAO();
 
@@ -76,10 +87,10 @@ public class TaskAdditionServlet extends HttpServlet {
 		request.setAttribute("TaskBean", task);
 
 		// セッションデータの削除
-		session.removeAttribute("TaskBean");
+		//session.removeAttribute("TaskBean");
 
 		// リクエストの転送
-		RequestDispatcher rd = request.getRequestDispatcher("task-addition-result.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher("task-addition-confirm-servlet");
 		rd.forward(request, response);
 	}
 

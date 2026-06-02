@@ -34,18 +34,18 @@ public class TaskListServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
+
 		List<TaskBean> taskList = null;
-		
+
 		//taskDAOの利用
 		TaskDAO dao = new TaskDAO();
-		
+
 		try {
 			taskList = dao.selectAll();
-		}catch (SQLException | ClassNotFoundException e) {
+		} catch (SQLException | ClassNotFoundException e) {
 			e.getStackTrace();
 		}
-		
+
 		request.setAttribute("taskList", taskList);
 
 		//タスク一覧表示画面へリクエスト転送

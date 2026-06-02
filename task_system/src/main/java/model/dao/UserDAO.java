@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.entity.UserBean;
+
 /**
  * @author　篠田
  */
@@ -15,7 +16,7 @@ public class UserDAO {
 
 	public boolean loginCheck(UserBean user)
 			throws SQLException, ClassNotFoundException {
-		
+
 		String sql = "SELECT * FROM m_user WHERE user_id = ? AND password = ?";
 
 		try (Connection con = ConnectionManager.getConnection();
@@ -37,7 +38,7 @@ public class UserDAO {
 		}
 		return false;
 	}
-	
+
 	public List<UserBean> selectAll()
 			throws SQLException, ClassNotFoundException {
 

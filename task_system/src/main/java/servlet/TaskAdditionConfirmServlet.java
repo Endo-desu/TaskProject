@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import model.entity.TaskBean;
+
 /**
  * タスク登録の入力チェックを行うサーブレットクラスです。
  * エラーがある場合はエラー画面へ、正常な場合はセッションに値を保持して登録実行サーブレットへフォワードします。
@@ -107,7 +108,7 @@ public class TaskAdditionConfirmServlet extends HttpServlet {
 			session.setAttribute("TaskBean", task);
 
 			// JSPへリクエストの転送
-			RequestDispatcher rd = request.getRequestDispatcher("task-addition-servlet");
+			RequestDispatcher rd = request.getRequestDispatcher("task-addition-result.jsp");
 			rd.forward(request, response);
 		}
 	}

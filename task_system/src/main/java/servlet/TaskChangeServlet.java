@@ -14,7 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import model.dao.TaskDAO;
+import model.entity.CategoryBean;
 import model.entity.TaskBean;
+import model.entity.UserBean;
 
 /**
  * タスク情報の変更処理を制御する
@@ -46,49 +48,36 @@ public class TaskChangeServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// セッションオブジェクトの取得
-		HttpSession session = request.getSession();
 
-		// セッションスコープからの属性値の取得
-		TaskBean task = (TaskBean) session.getAttribute("task");
+		// リクエストのエンコーディング方式を指定
+		request.setCharacterEncoding("UTF-8");
 
-		// DAOの生成
-		TaskDAO dao = new TaskDAO();
-
-		int processingNumber = 0; //処理件数
-
-		try {
-			// DAOの利用
-			processingNumber = dao.update(task);
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
-
-		// リクエストスコープへの属性の設定
-		request.setAttribute("processingNumber", processingNumber);
-
-		// 入力画面（JSP）からのデータの取得）
+		int taskId = Integer.parseInt(request.getParameter("taskId"));
 		String taskName = request.getParameter("taskName");
 		String category = request.getParameter("categoryId");
-		String limitDate = request.getParameter("updateDate");
+		String limitDate = request.getParameter("date");
 		String userName = request.getParameter("userId");
-		String statusCode = request.getParameter("statusCode");
+		String statusCode = request.getParameter("StatusCode");
 		String memo = request.getParameter("memo");
 
-		// 取得したデータをTaskBeanに設定
+		// 2. 取得したデータを新しく作った TaskBean にしっかり設定する
 		TaskBean taskBean = new TaskBean();
 		taskBean.setTaskName(taskName);
-		taskBean.setCategoryName(category);
+		taskBean.setCategoryId(Integer.parseInt(category));
 		taskBean.setLimitDate(limitDate);
-		taskBean.setUserName(userName);
-		taskBean.setStatusName(statusCode);
+		taskBean.setUserId(userName);
+		taskBean.setStatusCode(statusCode);
 		taskBean.setMemo(memo);
+		taskBean.setTaskId(taskId);
+
+		UserBean userbean = new UserBean();
+		userbean.setUserName(userName);
+
+		CategoryBean categorybean = new CategoryBean();
+		categorybean.setCategoryName(category);
 
 		// エラー文章の格納リストの生成
 		List<String> errors = new ArrayList<>();
-
-		// boolean型の変数
-		boolean changeError = false;
 
 		// 入力値のエラーチェック
 		if (taskName == null || taskName.isEmpty()) {
@@ -101,27 +90,43 @@ public class TaskChangeServlet extends HttpServlet {
 			errors.add("メモは100文字以内で入力してください。");
 		}
 
-		// エラー時の処理
+		// 3. エラー時の処理
 		if (!errors.isEmpty()) {
-			changeError = true;
-			// リクエストスコープに保存
+			boolean changeError = true;
+			// リクエストスコープに保存してエラー画面へ
 			request.setAttribute("errors", errors);
 			request.setAttribute("changeError", changeError);
-			request.setAttribute("TaskBean", task);
+			request.setAttribute("TaskBean", taskBean); // 新しいデータを画面に戻す
 
-			// JSPへリクエストの転送
 			RequestDispatcher rd = request.getRequestDispatcher("error.jsp");
 			rd.forward(request, response);
 
-			// エラーがない場合の処理
+			// 4. エラーがない場合の処理（ここで初めて安全にDBを更新する！）
 		} else {
-			session.setAttribute("TaskBean", task);
 
-			// JSPへリクエストの転送
+			// DAOの生成と利用
+			TaskDAO dao = new TaskDAO();
+			int processingNumber = 0; // 処理件数
+
+			try {
+				// ★ここが超重要！セッションの空のデータではなく、
+				// 画面の値を詰め込んだ「taskBean」をDAOに渡してアップデートする！
+				processingNumber = dao.update(taskBean);
+			} catch (ClassNotFoundException | SQLException e) {
+				e.printStackTrace();
+			}
+
+			// 結果画面で「1件更新しました」と表示できるようにリクエストに詰める
+			request.setAttribute("processingNumber", processingNumber);
+
+			// 更新した最新データを結果画面でも使えるようにセッションを上書き保存しておく
+			HttpSession session = request.getSession();
+			session.setAttribute("task", taskBean);
+
+			// 結果画面（あるいは結果画面用サーブレット）へリクエストの転送
+			// ※DB更新後はリダイレクト（sendRedirect）にするのが理想ですが、まずは動かすためにforwardのままとします
 			RequestDispatcher rd = request.getRequestDispatcher("task-change-confirm-servlet");
 			rd.forward(request, response);
 		}
-
 	}
-
 }

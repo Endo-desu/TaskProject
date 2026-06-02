@@ -29,7 +29,7 @@ public class LogoutServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-			
+
 		//タスク一覧表示画面へリクエスト転送
 		RequestDispatcher rd = request.getRequestDispatcher("logout.html");
 		rd.forward(request, response);

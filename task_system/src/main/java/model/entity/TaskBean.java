@@ -17,21 +17,31 @@ public class TaskBean implements Serializable {
 	 *  タスクID 
 	 */
 	private int taskId;
-	
+
 	/**
 	 *  タスク名 
 	 */
 	private String taskName;
-	
+
+	/**
+	 *  ユーザID 
+	 */
+	private String userId;
+
 	/**
 	 *  担当者情報 
 	 */
 	private String userName;
-	
+
 	/**
 	 *  期限 
 	 */
 	private String limitDate;
+
+	/**
+	 *  カテゴリID 
+	 */
+	private int categoryId;
 
 	/**
 	 *  カテゴリ名 
@@ -39,7 +49,12 @@ public class TaskBean implements Serializable {
 	private String categoryName;
 
 	/**
-	 *  ステータス 
+	 *  ステータスコード
+	 */
+	private String statusCode;
+
+	/**
+	 *  ステータス名
 	 */
 	private String statusName;
 
@@ -54,7 +69,7 @@ public class TaskBean implements Serializable {
 	public TaskBean() {
 
 	}
-	
+
 	/**
 	 * フィールドtaskの値を設定します。
 	 * @param task タスク名
@@ -86,7 +101,23 @@ public class TaskBean implements Serializable {
 	public String getTaskName() {
 		return taskName;
 	}
-	
+
+	/**
+	 * フィールドuserIdの値を返します。
+	 * @return 	ユーザID
+	 */
+	public String getUserId() {
+		return userId;
+	}
+
+	/**
+	 * フィールドuserIdの値を設定します。
+	 * @param userId ユーザID
+	 */
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
 	/**
 	 * フィールドuserNameの値を設定します。
 	 * @param userName 担当者情報
@@ -102,7 +133,7 @@ public class TaskBean implements Serializable {
 	public String getUserName() {
 		return userName;
 	}
-	
+
 	/**
 	 * フィールドlimitDateの値を設定します。
 	 * @param limitDate 期限
@@ -120,6 +151,22 @@ public class TaskBean implements Serializable {
 	}
 
 	/**
+	 * フィールドcategoryIdの値を返します。
+	 * @return カテゴリーID
+	 */
+	public int getCategoryId() {
+		return categoryId;
+	}
+
+	/**
+	 * フィールドcategoryIdの値を設定します。
+	 * @param categoryId カテゴリーID
+	 */
+	public void setCategoryId(int categoryId) {
+		this.categoryId = categoryId;
+	}
+
+	/**
 	 * フィールドcategoryNameの値を設定します。
 	 * @param categoryName カテゴリ名
 	 */
@@ -133,6 +180,22 @@ public class TaskBean implements Serializable {
 	 */
 	public String getCategoryName() {
 		return categoryName;
+	}
+
+	/**
+	 * フィールドstatusCodeの値を返します。
+	 * @return 	ステータスコード
+	 */
+	public String getStatusCode() {
+		return statusCode;
+	}
+
+	/**
+	 * フィールドstatusCodeの値を設定します。
+	 * @param statusCode ステータスコード
+	 */
+	public void setStatusCode(String statusCode) {
+		this.statusCode = statusCode;
 	}
 
 	/**
