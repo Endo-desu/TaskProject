@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  * メニュー画面からのリクエストを受け取り、画面を転送します。
  * @author 坂爪
  */
+import javax.servlet.http.HttpSession;
 
 import model.dao.CategoryDAO;
 import model.dao.StatusDAO;
@@ -57,34 +58,49 @@ public class TaskAdditionFormServlet extends HttpServlet {
 
 		// リクエストのエンコーディング方式を指定
 		request.setCharacterEncoding("UTF-8");
-
-		UserDAO userDao = new UserDAO();
-		CategoryDAO categoryDao = new CategoryDAO();
-		StatusDAO statusDao = new StatusDAO();
-
-		List<UserBean> userList = null;
-		List<CategoryBean> categoryList = null;
-		List<StatusBean> statusList = null;
-
-		try {
-			userList = userDao.selectAll();
-			categoryList = categoryDao.selectAll();
-			statusList = statusDao.selectAll();
-		} catch (ClassNotFoundException e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
+		
+		HttpSession session = request.getSession();
+		boolean loginFlg = false;
+		
+		if(session.getAttribute("loginFlg") != null) {
+			loginFlg = (boolean)session.getAttribute("loginFlg");
 		}
+		
+		if(loginFlg) {
+			
+			UserDAO userDao = new UserDAO();
+			CategoryDAO categoryDao = new CategoryDAO();
+			StatusDAO statusDao = new StatusDAO();
 
-		request.setAttribute("userList", userList);
-		request.setAttribute("categoryList", categoryList);
-		request.setAttribute("statusList", statusList);
+			List<UserBean> userList = null;
+			List<CategoryBean> categoryList = null;
+			List<StatusBean> statusList = null;
 
-		// リクエストの転送
-		RequestDispatcher rd = request.getRequestDispatcher("task-addition.jsp");
-		rd.forward(request, response);
+			try {
+				userList = userDao.selectAll();
+				categoryList = categoryDao.selectAll();
+				statusList = statusDao.selectAll();
+			} catch (ClassNotFoundException e) {
+				// TODO 自動生成された catch ブロック
+				e.printStackTrace();
+			} catch (SQLException e) {
+				// TODO 自動生成された catch ブロック
+				e.printStackTrace();
+			}
+
+			request.setAttribute("userList", userList);
+			request.setAttribute("categoryList", categoryList);
+			request.setAttribute("statusList", statusList);
+
+			// リクエストの転送
+			RequestDispatcher rd = request.getRequestDispatcher("task-addition.jsp");
+			rd.forward(request, response);
+			
+		}else {
+			// リクエストの転送
+			RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
+			rd.forward(request, response);
+		}
 	}
 
 }

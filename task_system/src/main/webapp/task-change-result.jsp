@@ -12,11 +12,9 @@
 
     <%@ include file="task-result.jsp" %>
 	
-	<form action="menu-servlet" method="POST">
-		<input type="submit" value="メニュー画面に戻る">
+	<form action="menu-servlet" method="post">
+		<input type="submit" value="メニュー画面へ戻る">
 	</form>
-
-	<% session.invalidate(); %>
 
 </body>
 </html>

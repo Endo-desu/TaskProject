@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import model.dao.TaskDAO;
 import model.entity.TaskBean;
@@ -34,23 +35,41 @@ public class TaskListServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
-		List<TaskBean> taskList = null;
-
-		//taskDAOの利用
-		TaskDAO dao = new TaskDAO();
-
-		try {
-			taskList = dao.selectAll();
-		} catch (SQLException | ClassNotFoundException e) {
-			e.getStackTrace();
+		
+		HttpSession session = request.getSession();
+		boolean loginFlg = false;
+		
+		if(session != null && session.getAttribute("loginFlg") != null) {
+			loginFlg = (boolean)session.getAttribute("loginFlg");
 		}
+		
+		System.out.println((boolean)session.getAttribute("loginFlg") + "です");
+		
+		if(loginFlg) {
+			
+			List<TaskBean> taskList = null;
 
-		request.setAttribute("taskList", taskList);
+			//taskDAOの利用
+			TaskDAO dao = new TaskDAO();
 
-		//タスク一覧表示画面へリクエスト転送
-		RequestDispatcher rd = request.getRequestDispatcher("task-list.jsp");
-		rd.forward(request, response);
+			try {
+				taskList = dao.selectAll();
+			} catch (SQLException | ClassNotFoundException e) {
+				e.getStackTrace();
+			}
+
+			request.setAttribute("taskList", taskList);
+
+			//タスク一覧表示画面へリクエスト転送
+			RequestDispatcher rd = request.getRequestDispatcher("task-list.jsp");
+			rd.forward(request, response);
+			
+		}else {
+			// リクエストの転送
+			RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
+			rd.forward(request, response);
+		}
+		
 	}
 
 }

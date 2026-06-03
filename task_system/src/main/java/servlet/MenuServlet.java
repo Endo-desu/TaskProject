@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class MenuServlet
@@ -29,9 +30,23 @@ public class MenuServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		// リクエストの転送
-		RequestDispatcher rd = request.getRequestDispatcher("menu.jsp");
-		rd.forward(request, response);
+		HttpSession session = request.getSession();
+		boolean loginFlg = false;
+		
+		if(session != null && session.getAttribute("loginFlg") != null) {
+			loginFlg = (boolean)session.getAttribute("loginFlg");
+		}
+		
+		if(loginFlg) {
+			// リクエストの転送
+			RequestDispatcher rd = request.getRequestDispatcher("menu.jsp");
+			rd.forward(request, response);
+		}else {
+			// リクエストの転送
+			RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
+			rd.forward(request, response);
+		}
+	
 	}
 
 }

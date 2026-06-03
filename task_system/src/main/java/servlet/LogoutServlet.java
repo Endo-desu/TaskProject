@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * ログアウト確認画面への遷移を制御
@@ -29,6 +30,11 @@ public class LogoutServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
+		HttpSession session = request.getSession();
+		boolean loginFlg = false;
+		session.setAttribute("loginFlg", loginFlg);
+		//session.invalidate();
 
 		//タスク一覧表示画面へリクエスト転送
 		RequestDispatcher rd = request.getRequestDispatcher("logout.html");

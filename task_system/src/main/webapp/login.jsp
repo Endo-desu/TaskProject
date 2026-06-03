@@ -6,28 +6,36 @@
 <meta charset='utf-8'>
 <meta name='author' content='shinoda'>
 <title>ログイン画面</title>
-<link rel='stylesheet' href='main.css'>
+<link rel='stylesheet' href='style_sheet.css'>
 </head>
 <body>
-	<h1>ログイン画面</h1>
+	<div class='login-wrapper'>
+		<div class='login-card'>
+			<h1 class = 'title'>ログイン画面</h1>
+			<div class = 'form-group'>
+				<form action="login-servlet" method="POST">
+					<label>ユーザID：
+					<input type="text" name="userId"></label><br> 
+					<label>パスワード：
+					<input type="text" name="password"></label><br>
+					<!--エラーメッセージを表示-->
 
-	<form action="login-servlet" method="POST">
-		ユーザID：<input type="text" name="userId"><br> 
-		パスワード：<input type="text" name="password"><br>
-		<!--エラーメッセージを表示-->
-
-		<%
-		//エラーメッセージのnullチェック
-		if (request.getAttribute("errorMessage") != null) {
-		%>
-		<%=(String) request.getAttribute("errorMessage")%>
-		<%
-		}else {
-			/*Do NOTHING*/
-		}
-		%><br>
-
-		<input type="submit" value="ログインする">
-	</form>
+					<%
+					//エラーメッセージのnullチェック
+					if (request.getAttribute("errorMessage") != null) {
+					%>
+					<a class = 'worning'><%=(String) request.getAttribute("errorMessage")%>
+					</a>
+					<%
+					} else {
+					/*Do NOTHING*/
+					}
+					%>
+					<br>
+					<button type="submit">ログインする</button>
+				</form>
+			</div>
+		</div>
+	</div>
 </body>
 </html>

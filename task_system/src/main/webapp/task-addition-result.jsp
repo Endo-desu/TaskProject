@@ -11,7 +11,7 @@
 
 	<%@ include file="task-result.jsp" %>
 	
-	<form action="menu.jsp">
+	<form action="menu-servlet" method="post">
 		<input type="submit" value="メニュー画面へ戻る">
 	</form>
 	

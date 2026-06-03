@@ -2,18 +2,34 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name = 'author'content = '篠田'>
+<meta name="author" content="篠田">
 <title>ログアウト確認画面</title>
+<link rel="stylesheet" type="text/css" href="style-sheet.css">
 </head>
 <body>
-	<h1>本当にログアウトしますか？</h1>
-	<form action = "logout-servlet" method = "POST">
-		<input type = "submit" value = "はい">
-	</form>
-	
-	<form action = "menu-servlet" method = "POST">
-		<input type = "submit" value = "いいえ">
-	</form>
-	
+
+	<header class="main-header">
+		<div></div> <div class="header-title">タスク管理システム</div>
+		<div></div>
+	</header>
+
+	<div class="form-container">
+		<h1>ログアウトの確認</h1>
+		
+		<div class="logout-message">
+			<p>本当にログアウトしますか？</p>
+		</div>
+		
+		<div class="logout-btn-group">
+			<form action="logout-servlet" method="POST" class="flex-btn-form">
+				<input type="submit" value="はい（終了）" class="submit-btn logout-yes-btn">
+			</form>
+			
+			<form action="menu-servlet" method="POST" class="flex-btn-form">
+				<input type="submit" value="いいえ（戻る）" class="submit-btn logout-no-btn">
+			</form>
+		</div>
+	</div>
+
 </body>
 </html>

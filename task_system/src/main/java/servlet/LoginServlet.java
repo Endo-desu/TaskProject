@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import model.dao.UserDAO;
 import model.entity.UserBean;
@@ -58,8 +59,16 @@ public class LoginServlet extends HttpServlet {
 		try {
 			//DAO生成
 			UserDAO userDao = new UserDAO();
+			
+			boolean loginFlg = userDao.loginCheck(userBean);
 
-			if (userDao.loginCheck(userBean)) {
+			if (loginFlg) {
+				
+				HttpSession session = request.getSession();
+				
+				//セッションスコープへの属性の設定
+				session.setAttribute("loginFlg", loginFlg);
+				
 				//メニューへ遷移
 				RequestDispatcher rd = request.getRequestDispatcher("menu-servlet");
 				rd.forward(request, response);

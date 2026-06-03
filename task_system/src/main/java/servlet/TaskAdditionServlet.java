@@ -66,6 +66,11 @@ public class TaskAdditionServlet extends HttpServlet {
 		task.setTaskName(request.getParameter("taskName"));
 		task.setCategoryId(Integer.parseInt(request.getParameter("categoryId")));
 		task.setLimitDate(request.getParameter("date"));
+		
+		if (request.getParameter("date") != null && request.getParameter("date").isEmpty()) {
+			task.setLimitDate(null); 
+		}
+		
 		task.setUserName(request.getParameter("userId"));
 		task.setStatusName(request.getParameter("StatusCode"));
 		task.setMemo(request.getParameter("memo"));
