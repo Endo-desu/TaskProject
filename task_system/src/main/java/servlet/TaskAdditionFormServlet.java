@@ -64,6 +64,8 @@ public class TaskAdditionFormServlet extends HttpServlet {
 		
 		if(session.getAttribute("loginFlg") != null) {
 			loginFlg = (boolean)session.getAttribute("loginFlg");
+		} else {
+			/* DO NOTHING */
 		}
 		
 		if(loginFlg) {

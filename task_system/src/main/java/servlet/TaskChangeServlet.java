@@ -51,81 +51,109 @@ public class TaskChangeServlet extends HttpServlet {
 
 		// リクエストのエンコーディング方式を指定
 		request.setCharacterEncoding("UTF-8");
-
-		int taskId = Integer.parseInt(request.getParameter("taskId"));
-		String taskName = request.getParameter("taskName");
-		String category = request.getParameter("categoryId");
-		String limitDate = request.getParameter("date");
-		String userName = request.getParameter("userId");
-		String statusCode = request.getParameter("StatusCode");
-		String memo = request.getParameter("memo");
-
-		// 2. 取得したデータを新しく作った TaskBean にしっかり設定する
-		TaskBean taskBean = new TaskBean();
-		taskBean.setTaskName(taskName);
-		taskBean.setCategoryId(Integer.parseInt(category));
-		taskBean.setLimitDate(limitDate);
-		taskBean.setUserId(userName);
-		taskBean.setStatusCode(statusCode);
-		taskBean.setMemo(memo);
-		taskBean.setTaskId(taskId);
-
-		UserBean userbean = new UserBean();
-		userbean.setUserName(userName);
-
-		CategoryBean categorybean = new CategoryBean();
-		categorybean.setCategoryName(category);
-
-		// エラー文章の格納リストの生成
-		List<String> errors = new ArrayList<>();
-
-		// 入力値のエラーチェック
-		if (taskName == null || taskName.isEmpty()) {
-			errors.add("タスク名は必須入力です。");
-		} else if (taskName.length() > 20) {
-			errors.add("タスク名は20文字以内で入力してください。");
-		}
-
-		if (memo != null && memo.length() > 100) {
-			errors.add("メモは100文字以内で入力してください。");
-		}
-
-		// 3. エラー時の処理
-		if (!errors.isEmpty()) {
-			boolean changeError = true;
-			// リクエストスコープに保存してエラー画面へ
-			request.setAttribute("errors", errors);
-			request.setAttribute("changeError", changeError);
-			request.setAttribute("TaskBean", taskBean); // 新しいデータを画面に戻す
-
-			RequestDispatcher rd = request.getRequestDispatcher("error.jsp");
-			rd.forward(request, response);
-
-			// 4. エラーがない場合の処理（ここで初めて安全にDBを更新する！）
+		
+		HttpSession session = request.getSession();
+		boolean loginFlg = false;
+		
+		if(session != null && session.getAttribute("loginFlg") != null) {
+			loginFlg = (boolean)session.getAttribute("loginFlg");
 		} else {
+			/* DO NOTHING */
+		}
+		
+		if(loginFlg) {
+			
+			int taskId = Integer.parseInt(request.getParameter("taskId"));
+			String taskName = request.getParameter("taskName");
+			String category = request.getParameter("categoryId");
+			String limitDate = request.getParameter("date");
+			String userName = request.getParameter("userId");
+			String statusCode = request.getParameter("StatusCode");
+			String memo = request.getParameter("memo");
 
-			// DAOの生成と利用
-			TaskDAO dao = new TaskDAO();
-			int processingNumber = 0; // 処理件数
+			// 2. 取得したデータを新しく作った TaskBean にしっかり設定する
+			TaskBean taskBean = new TaskBean();
+			taskBean.setTaskName(taskName);
+			taskBean.setCategoryId(Integer.parseInt(category));
+			taskBean.setLimitDate(limitDate);
+			
+			//期限の指定がない場合nullを代入
+			if (taskBean.getLimitDate().isEmpty()) {
+				taskBean.setLimitDate(null);
+			} else {
+				/* DO NOTHING */
+			}
+			
+			taskBean.setUserId(userName);
+			taskBean.setStatusCode(statusCode);
+			taskBean.setMemo(memo);
+			taskBean.setTaskId(taskId);
 
-			try {
-				// ★ここが超重要！セッションの空のデータではなく、
-				// 画面の値を詰め込んだ「taskBean」をDAOに渡してアップデートする！
-				processingNumber = dao.update(taskBean);
-			} catch (ClassNotFoundException | SQLException e) {
-				e.printStackTrace();
+			UserBean userbean = new UserBean();
+			userbean.setUserName(userName);
+
+			CategoryBean categorybean = new CategoryBean();
+			categorybean.setCategoryName(category);
+
+			// エラー文章の格納リストの生成
+			List<String> errors = new ArrayList<>();
+
+			// 入力値のエラーチェック
+			if (taskName == null || taskName.isEmpty()) {
+				errors.add("タスク名は必須入力です。");
+			} else if (taskName.length() > 20) {
+				errors.add("タスク名は20文字以内で入力してください。");
+			} else {
+				/* DO NOTHING */
 			}
 
-			// 結果画面で「1件更新しました」と表示できるようにリクエストに詰める
-			request.setAttribute("processingNumber", processingNumber);
+			if (memo != null && memo.length() > 100) {
+				errors.add("メモは100文字以内で入力してください。");
+			} else {
+				/* DO NOTHING */
+			}
 
-			// 更新した最新データを結果画面でも使えるようにセッションを上書き保存しておく
-			HttpSession session = request.getSession();
-			session.setAttribute("task", taskBean);
+			// 3. エラー時の処理
+			if (!errors.isEmpty()) {
+				boolean changeError = true;
+				// リクエストスコープに保存してエラー画面へ
+				request.setAttribute("errors", errors);
+				request.setAttribute("changeError", changeError);
+				request.setAttribute("TaskBean", taskBean); // 新しいデータを画面に戻す
 
-			// 結果画面（あるいは結果画面用サーブレット）へリクエストの転送
-			// ※DB更新後はリダイレクト（sendRedirect）にするのが理想ですが、まずは動かすためにforwardのままとします
-			RequestDispatcher rd = request.getRequestDispatcher("task-change-confirm-servlet");
+				RequestDispatcher rd = request.getRequestDispatcher("error.jsp");
+				rd.forward(request, response);
+
+				// 4. エラーがない場合の処理（ここで初めて安全にDBを更新する！）
+			} else {
+
+				// DAOの生成と利用
+				TaskDAO dao = new TaskDAO();
+				int processingNumber = 0; // 処理件数
+
+				try {
+					// ★ここが超重要！セッションの空のデータではなく、
+					// 画面の値を詰め込んだ「taskBean」をDAOに渡してアップデートする！
+					processingNumber = dao.update(taskBean);
+				} catch (ClassNotFoundException | SQLException e) {
+					e.printStackTrace();
+				}
+
+				// 結果画面で「1件更新しました」と表示できるようにリクエストに詰める
+				request.setAttribute("processingNumber", processingNumber);
+
+				// 更新した最新データを結果画面でも使えるようにセッションを上書き保存しておく
+				session.setAttribute("task", taskBean);
+
+				// 結果画面（あるいは結果画面用サーブレット）へリクエストの転送
+				// ※DB更新後はリダイレクト（sendRedirect）にするのが理想ですが、まずは動かすためにforwardのままとします
+				RequestDispatcher rd = request.getRequestDispatcher("task-change-confirm-servlet");
+				rd.forward(request, response);
+			}
+			
+		}else {
+			// リクエストの転送
+			RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
 			rd.forward(request, response);
 		}
 	}

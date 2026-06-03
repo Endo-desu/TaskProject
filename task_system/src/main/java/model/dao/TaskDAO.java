@@ -70,7 +70,7 @@ public class TaskDAO {
 	}
 
 	/**
-	 * 登録済みのタスク情報を全件抽出します
+	 * 登録済みのタスク情報を1件抽出します
 	 * @return タスク情報
 	 * @throws SQLException
 	 * @throws ClassNotFoundException
@@ -134,6 +134,8 @@ public class TaskDAO {
 				task.setStatusName(statusName);
 				task.setMemo(memo);
 
+			} else {
+				/* DO NOTHING */
 			}
 		}
 		return task;
@@ -187,6 +189,8 @@ public class TaskDAO {
 			try (ResultSet keys = pstmt.getGeneratedKeys()) {
 				if (keys.next()) {
 					newTaskId = keys.getInt(1);
+				} else {
+					/* DO NOTHING */
 				}
 			}
 
@@ -199,6 +203,8 @@ public class TaskDAO {
 						task.setCategoryName(rs.getString("category_name"));
 						task.setUserName(rs.getString("user_name"));
 						task.setStatusName(rs.getString("status_name"));
+					} else {
+						/* DO NOTHING */
 					}
 				}
 			}

@@ -5,15 +5,26 @@
 <head>
 <meta charset="UTF-8">
 <title>タスク登録完了画面</title>
+<link rel="stylesheet" type="text/css" href="style-sheet.css">
 </head>
 <body>
-	<h2>以下のタスクの登録が完了しました</h2>
 
-	<%@ include file="task-result.jsp" %>
+	<header class="main-header">
+		<div></div> 
+		<div class="header-title">タスク管理システム</div>
+		<div></div> 
+	</header>
 	
-	<form action="menu-servlet" method="post">
-		<input type="submit" value="メニュー画面へ戻る">
-	</form>
+	<div class="form-container">
+		<h1>以下のタスクの登録が完了しました</h1>
+
+		<%@ include file="task-result.jsp" %>
+	
+	<div class="btn-group">
+			<form action="menu-servlet" method="POST">
+				<input type="submit" value="メニュー画面に戻る" class="submit-btn">
+			</form>
+	</div>
 	
 </body>
 </html>

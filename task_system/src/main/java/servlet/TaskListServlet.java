@@ -41,9 +41,9 @@ public class TaskListServlet extends HttpServlet {
 		
 		if(session != null && session.getAttribute("loginFlg") != null) {
 			loginFlg = (boolean)session.getAttribute("loginFlg");
+		} else {
+			/* DO NOTHING */
 		}
-		
-		System.out.println((boolean)session.getAttribute("loginFlg") + "です");
 		
 		if(loginFlg) {
 			

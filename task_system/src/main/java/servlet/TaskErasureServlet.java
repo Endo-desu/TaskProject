@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import model.entity.TaskBean;
 
@@ -45,43 +46,60 @@ public class TaskErasureServlet extends HttpServlet {
 
 		// リクエストのエンコーディング方式を指定
 		request.setCharacterEncoding("UTF-8");
-
-		TaskBean task = new TaskBean();
-		int deleteCnt = 0;
-
-		try {
-
-			//データベースアクセスオブジェクトの生成
-			model.dao.TaskDAO dao = new model.dao.TaskDAO();
-
-			//データベースアクセスオブジェクトの利用
-			task.setTaskId(Integer.parseInt(request.getParameter("delete-task-id")));
-
-			deleteCnt = dao.delete(task);
-
-		} catch (SQLException | ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-
-		request.setAttribute("deleteTaskName", request.getParameter("delete-task-name"));
-
-		boolean deleteError = false;
-
-		if (deleteCnt == 1) {
-			//転送先のパスを指定して転送処理用オブジェクトを取得
-			RequestDispatcher rd = request.getRequestDispatcher("task-erasure-confirm");
-
-			//リクエストの転送
-			rd.forward(request, response);
+		
+		HttpSession session = request.getSession();
+		boolean loginFlg = false;
+		
+		if(session != null && session.getAttribute("loginFlg") != null) {
+			loginFlg = (boolean)session.getAttribute("loginFlg");
 		} else {
-			deleteError = true;
+			/* DO NOTHING */
+		}
+		
+		if(loginFlg) {
+			
+			TaskBean task = new TaskBean();
+			int deleteCnt = 0;
 
-			request.setAttribute("deleteError", deleteError);
+			try {
 
-			//転送先のパスを指定して転送処理用オブジェクトを取得
-			RequestDispatcher rd = request.getRequestDispatcher("task-erasure-result.jsp");
+				//データベースアクセスオブジェクトの生成
+				model.dao.TaskDAO dao = new model.dao.TaskDAO();
 
-			//リクエストの転送
+				//データベースアクセスオブジェクトの利用
+				task.setTaskId(Integer.parseInt(request.getParameter("delete-task-id")));
+
+				deleteCnt = dao.delete(task);
+
+			} catch (SQLException | ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+
+			request.setAttribute("deleteTaskName", request.getParameter("delete-task-name"));
+
+			boolean deleteError = false;
+
+			if (deleteCnt == 1) {
+				//転送先のパスを指定して転送処理用オブジェクトを取得
+				RequestDispatcher rd = request.getRequestDispatcher("task-erasure-confirm");
+
+				//リクエストの転送
+				rd.forward(request, response);
+			} else {
+				deleteError = true;
+
+				request.setAttribute("deleteError", deleteError);
+
+				//転送先のパスを指定して転送処理用オブジェクトを取得
+				RequestDispatcher rd = request.getRequestDispatcher("task-erasure-result.jsp");
+
+				//リクエストの転送
+				rd.forward(request, response);
+			}
+			
+		}else {
+			// リクエストの転送
+			RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
 			rd.forward(request, response);
 		}
 

@@ -54,49 +54,75 @@ public class TaskAdditionServlet extends HttpServlet {
 
 		// 文字コーディングを設定
 		request.setCharacterEncoding("UTF-8");
-
-		// セッションオブジェクトの取り出し
+		
 		HttpSession session = request.getSession();
-		TaskBean task = (TaskBean) session.getAttribute("TaskBean");
-
-		if (task == null) {
-			task = new TaskBean();
-		}
-
-		task.setTaskName(request.getParameter("taskName"));
-		task.setCategoryId(Integer.parseInt(request.getParameter("categoryId")));
-		task.setLimitDate(request.getParameter("date"));
+		boolean loginFlg = false;
 		
-		if (request.getParameter("date") != null && request.getParameter("date").isEmpty()) {
-			task.setLimitDate(null); 
+		if(session != null && session.getAttribute("loginFlg") != null) {
+			loginFlg = (boolean)session.getAttribute("loginFlg");
+		} else {
+			/* DO NOTHING */
 		}
 		
-		task.setUserName(request.getParameter("userId"));
-		task.setStatusName(request.getParameter("StatusCode"));
-		task.setMemo(request.getParameter("memo"));
+		if(loginFlg) {
+			
+			// セッションオブジェクトの取り出し
+			TaskBean task = (TaskBean) session.getAttribute("TaskBean");
 
-		// DAO（データアクセスオブジェクト）の生成
-		TaskDAO dao = new TaskDAO();
+			if (task == null) {
+				task = new TaskBean();
+			} else {
+				/* DO NOTHING */
+			}
 
-		int processingNumber = 0; // 処理件数を格納する変数を定義
+			task.setTaskName(request.getParameter("taskName"));
+			task.setCategoryId(Integer.parseInt(request.getParameter("categoryId")));
+			task.setLimitDate(request.getParameter("date"));
+			
+			//期限の指定がない場合nullを代入
+			if (task.getLimitDate().isEmpty()) {
+				task.setLimitDate(null);
+			} else {
+				/* DO NOTHING */
+			}
+			
+			task.setUserName(request.getParameter("userId"));
+			task.setStatusName(request.getParameter("StatusCode"));
+			task.setMemo(request.getParameter("memo"));
 
-		try {
-			// taskBeanを引数に渡して、DBに登録
-			processingNumber = dao.insert(task);
+			// DAO（データアクセスオブジェクト）の生成
+			TaskDAO dao = new TaskDAO();
 
-		} catch (SQLException | ClassNotFoundException e) {
-			e.printStackTrace();
+			int processingNumber = 0; // 処理件数を格納する変数を定義
+
+			try {
+				
+				if(!task.getTaskName().isEmpty() && task.getTaskName() != null) {
+					// taskBeanを引数に渡して、DBに登録
+					processingNumber = dao.insert(task);
+				} else {
+					/* DO NOTHING */
+				}
+
+			} catch (SQLException | ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+
+			// リクエストスコープへ設定
+			request.setAttribute("TaskBean", task);
+
+			// セッションデータの削除
+			//session.removeAttribute("TaskBean");
+
+			// リクエストの転送
+			RequestDispatcher rd = request.getRequestDispatcher("task-addition-confirm-servlet");
+			rd.forward(request, response);
+			
+		}else {
+			// リクエストの転送
+			RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
+			rd.forward(request, response);
 		}
-
-		// リクエストスコープへ設定
-		request.setAttribute("TaskBean", task);
-
-		// セッションデータの削除
-		//session.removeAttribute("TaskBean");
-
-		// リクエストの転送
-		RequestDispatcher rd = request.getRequestDispatcher("task-addition-confirm-servlet");
-		rd.forward(request, response);
 	}
 
 }

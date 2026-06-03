@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * タスクの削除確認画面への遷移を制御する
@@ -42,13 +43,30 @@ public class TaskErasureFormServlet extends HttpServlet {
 
 		// リクエストのエンコーディング方式を指定
 		request.setCharacterEncoding("UTF-8");
+		
+		HttpSession session = request.getSession();
+		boolean loginFlg = false;
+		
+		if(session != null && session.getAttribute("loginFlg") != null) {
+			loginFlg = (boolean)session.getAttribute("loginFlg");
+		} else {
+			/* DO NOTHING */
+		}
+		
+		if(loginFlg) {
+			
+			request.setAttribute("deleteTaskId", request.getParameter("taskId"));
+			request.setAttribute("deleteTaskName", request.getParameter("taskName"));
 
-		request.setAttribute("deleteTaskId", request.getParameter("taskId"));
-		request.setAttribute("deleteTaskName", request.getParameter("taskName"));
-
-		// リクエストの転送
-		RequestDispatcher rd = request.getRequestDispatcher("task-erasure.jsp");
-		rd.forward(request, response);
+			// リクエストの転送
+			RequestDispatcher rd = request.getRequestDispatcher("task-erasure.jsp");
+			rd.forward(request, response);
+			
+		}else {
+			// リクエストの転送
+			RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
+			rd.forward(request, response);
+		}
 
 	}
 

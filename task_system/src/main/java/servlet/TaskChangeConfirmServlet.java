@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import model.dao.TaskDAO;
 import model.entity.TaskBean;
@@ -46,21 +47,40 @@ public class TaskChangeConfirmServlet extends HttpServlet {
 
 		// 文字コーディングを設定
 		request.setCharacterEncoding("UTF-8");
-
-		TaskDAO dao = new TaskDAO();
-		TaskBean task = new TaskBean();
-
-		try {
-			task = dao.select(Integer.parseInt(request.getParameter("taskId")));
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
+		
+		HttpSession session = request.getSession();
+		boolean loginFlg = false;
+		
+		if(session != null && session.getAttribute("loginFlg") != null) {
+			loginFlg = (boolean)session.getAttribute("loginFlg");
+		} else {
+			/* DO NOTHING */
 		}
+		
+		if(loginFlg) {
+			
+			TaskDAO dao = new TaskDAO();
+			TaskBean task = new TaskBean();
 
-		request.setAttribute("TaskBean", task);
+			try {
+				task = dao.select(Integer.parseInt(request.getParameter("taskId")));
+			} catch (ClassNotFoundException | SQLException e) {
+				e.printStackTrace();
+			}
+			
+			System.out.println(task.getLimitDate());
+			
+			request.setAttribute("TaskBean", task);
 
-		// JSPへリクエストの転送
-		RequestDispatcher rd = request.getRequestDispatcher("task-change-result.jsp");
-		rd.forward(request, response);
+			// JSPへリクエストの転送
+			RequestDispatcher rd = request.getRequestDispatcher("task-change-result.jsp");
+			rd.forward(request, response);
+			
+		}else {
+			// リクエストの転送
+			RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
+			rd.forward(request, response);
+		}
 
 	}
 
